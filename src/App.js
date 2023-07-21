@@ -1,24 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { ThemeProvider } from "@emotion/react";
+import {
+  AppBar,
+  Container,
+  CssBaseline,
+  Toolbar,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import Tareas from "./components/Tareas";
 
 function App() {
+  const theme = createTheme({
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: `
+        body {
+          background-color: #0d2b45;
+        }
+        `,
+      },
+    },
+    palette: {
+      mode: "dark",
+      primary: {
+        light: "#ffd4a3",
+        main: "#ffaa5e",
+        dark: "#d08159",
+      },
+      secondary: {
+        light: "#8d697a",
+        main: "#544e68",
+        dark: "#203c56",
+      },
+    },
+    typography:{
+      allVariants:{
+        color: '#ffecd6'
+      }
+    }
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Tareas/>
+    </ThemeProvider>
   );
 }
 
