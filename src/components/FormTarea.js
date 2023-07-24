@@ -1,3 +1,4 @@
+import { serverTimestamp } from 'firebase/firestore';
 import { Box, FormControl, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,7 +14,8 @@ export default function FormTarea(props){
     function addTarea(event){
         event.preventDefault();
         const newID = uuidv4();
-        props.addTarea({id:newID, input:input, isTachada:false});
+        const fecha = serverTimestamp();
+        props.addTarea({id:newID, fechaCreacion:fecha, input:input, isTachada:false});
         setInput('');
     }
 

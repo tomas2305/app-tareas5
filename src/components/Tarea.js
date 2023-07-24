@@ -12,7 +12,8 @@ import tareaImage from "../assets/tarea.png";
 import { Delete } from "@mui/icons-material";
 
 export default function Tarea(props) {
-  const [isTachada, setIsTachada] = useState(false);
+  const tarea = props.tarea
+  const [isTachada, setIsTachada] = useState(tarea.isTachada);
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
@@ -32,11 +33,13 @@ export default function Tarea(props) {
   };
 
   function tachar() {
-    setIsTachada(!isTachada);
+    const newTachada = !isTachada;
+    setIsTachada(newTachada);
+    props.tacharTarea({...tarea, isTachada: newTachada});
   }
 
   function deleteTarea(){
-    props.deleteTarea(props.id);
+    props.deleteTarea(tarea.id);
   }
 
   return (
@@ -55,7 +58,7 @@ export default function Tarea(props) {
         }
       >
         <Typography gutterBottom variant="h6" component="div">
-          {props.input}
+          {tarea.input}
         </Typography>
       </CardContent>
       <CardActions

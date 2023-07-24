@@ -1,23 +1,18 @@
 import { AppBar, Container, Grid, Toolbar, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tarea from "./Tarea";
 import { useTheme } from "@emotion/react";
 import FormTarea from "./FormTarea";
+import useTareasFirestore from "../hooks/useTareasFirestore";
+
 
 export default function Tareas() {
-  const [tareas, setTareas] = useState([]);
+  const { tareas, getTareas,  addTarea, deleteTarea, tacharTarea} = useTareasFirestore();
 
   const theme = useTheme();
   const secondary = theme.palette.secondary.dark;
 
-  function addTarea(tarea) {
-    setTareas([...tareas, tarea]);
-  }
-
-  function deleteTarea(id) {
-    setTareas(tareas.filter(tarea => tarea.id !== id))
-  }
-
+  
   return (
     <>
       <AppBar position="sticky" sx={{ bgcolor: secondary }}>
@@ -32,12 +27,13 @@ export default function Tareas() {
       <Container className="App">
         <Grid container spacing={4}>
           {tareas.map((tarea) => (
-            <Grid item xs={3} key={tarea.id}>
+            <Grid key={tarea.id} item xs={3} >
               <Tarea
+                tacharTarea={tacharTarea}
                 deleteTarea={deleteTarea}
+                isTachada = {tarea.isTachada}
                 id={tarea.id}
-                input={tarea.input}
-                isTachada={tarea.isTachada}
+                tarea={tarea}
               />
             </Grid>
           ))}
