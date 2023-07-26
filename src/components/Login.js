@@ -1,27 +1,22 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Box } from '@mui/material';
-import { useTheme } from '@emotion/react';
-import { Link } from 'react-router-dom';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [open, setOpen] = React.useState(true);
-  const theme = useTheme();
-  const secondary = theme.palette.secondary
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setOpen(false);
+    navigate('/');
   };
 
   return (
     <div>
-      <Dialog fullWidth open={open} onClose={handleClose}>
+      <Dialog fullWidth open={true} onClose={handleClose}>
         <DialogTitle>Login</DialogTitle>
         <DialogContent>
           <TextField
@@ -38,12 +33,17 @@ export default function Login() {
             margin="dense"
             id="password"
             label="Password"
-            type='password'
-            autoComplete='true'
+            type="password"
+            autoComplete="true"
             fullWidth
             variant="standard"
           />
-          <Link to='/resetpassword'><Button size='small'>Reestablecer Contraseña</Button></Link>
+          <Link to="/resetpassword">
+            <Button size="small">Reestablecer Contraseña</Button>
+          </Link>
+          <Link to="/register">
+            <Button size="small">Registrarse</Button>
+          </Link>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
