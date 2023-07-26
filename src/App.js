@@ -4,7 +4,7 @@ import {
   CssBaseline,
   createTheme,
 } from "@mui/material";
-import Tareas from "./components/Tareas";
+import Home from "./components/Home";
 
 function App() {
   const theme = createTheme({
@@ -40,7 +40,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Tareas/>
+      <Home/>
     </ThemeProvider>
   );
 }
