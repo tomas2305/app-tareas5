@@ -1,12 +1,7 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { ThemeProvider } from "@emotion/react";
 import {
-  AppBar,
-  Container,
   CssBaseline,
-  Toolbar,
-  Typography,
   createTheme,
 } from "@mui/material";
 import Tareas from "./components/Tareas";

@@ -1,13 +1,13 @@
 import { AppBar, Container, Grid, Toolbar, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Tarea from "./Tarea";
 import { useTheme } from "@emotion/react";
 import FormTarea from "./FormTarea";
-import useTareasFirestore from "../hooks/useTareasFirestore";
+import useTareasFirestore from "../services/useTareasFirestore";
 
 
 export default function Tareas() {
-  const { tareas, getTareas,  addTarea, deleteTarea, tacharTarea} = useTareasFirestore();
+  const { tareas,  addTarea, deleteTarea, tacharTarea} = useTareasFirestore();
 
   const theme = useTheme();
   const secondary = theme.palette.secondary.dark;
