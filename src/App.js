@@ -1,9 +1,6 @@
 import "./App.css";
 import { ThemeProvider } from "@emotion/react";
-import {
-  CssBaseline,
-  createTheme,
-} from "@mui/material";
+import { CssBaseline, createTheme } from "@mui/material";
 import Home from "./components/Home";
 
 function App() {
@@ -30,17 +27,17 @@ function App() {
         dark: "#203c56",
       },
     },
-    typography:{
-      allVariants:{
-        color: '#ffecd6'
-      }
-    }
+    typography: {
+      allVariants: {
+        color: "#ffecd6",
+      },
+    },
   });
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Home/>
+      <Home />
     </ThemeProvider>
   );
 }
