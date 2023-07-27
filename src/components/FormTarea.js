@@ -2,19 +2,21 @@ import { serverTimestamp } from "firebase/firestore";
 import { Box, FormControl, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import useTareasFirestore from "../services/useTareasFirestore";
 
-export default function FormTarea(props) {
+export default function FormTarea() {
   const [input, setInput] = useState("");
+  const {addTarea} = useTareasFirestore();
 
   function changeInput(event) {
     setInput(event.target.value);
   }
 
-  function addTarea(event) {
+  function handleAddTarea(event) {
     event.preventDefault();
     const newID = uuidv4();
     const fecha = serverTimestamp();
-    props.addTarea({
+    addTarea({
       id: newID,
       fechaCreacion: fecha,
       input: input,
@@ -24,7 +26,7 @@ export default function FormTarea(props) {
   }
 
   return (
-    <Box component="form" onSubmit={addTarea} sx={{ width: "40%" }}>
+    <Box component="form" onSubmit={handleAddTarea} sx={{ width: "40%" }}>
       <FormControl fullWidth>
         <TextField
           size="small"

@@ -11,6 +11,7 @@ import { useTheme } from "@emotion/react";
 import Tareas from "./Tareas";
 import { Link, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import FormTarea from "./FormTarea";
 
 export default function Home() {
   const theme = useTheme();
@@ -57,7 +58,10 @@ export default function Home() {
       <Outlet />
       <Container className="App">
         {user ? (
-          <Tareas />
+          <>
+            <FormTarea />
+            <Tareas />
+          </>
         ) : (
           <Typography variant="h4">Bienvenido, no hay tareas aún!</Typography>
         )}

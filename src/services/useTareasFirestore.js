@@ -9,9 +9,12 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function useTareasFirestore() {
-  const tareasRef = collection(db, "tareas");
+  const {user} = useAuthContext()
+  const userRef = doc(db, 'usuarios', user.email);
+  const tareasRef = collection(userRef, "tareas");
   const [tareas, setTareas] = useState([]);
 
   const getTareas = async () => {

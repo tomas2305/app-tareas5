@@ -8,9 +8,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Register() {
   const navigate = useNavigate();
+  const userRef = collection(db, "usuarios");
   const { signup } = useAuthContext();
   const [validePassword, setValidePassword] = useState(false);
   const [confirmStyles, setConfirmStyles] = useState({});
@@ -29,7 +32,6 @@ export default function Register() {
 
   const handleChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
-    console.log("change");
 
     const voidCondition = value !== "";
     const confirmCondition = name === "confirmPassword" && voidCondition;
@@ -52,6 +54,11 @@ export default function Register() {
     setError("");
     try {
       await signup(user.email, user.password);
+      setDoc(doc(userRef, user.email), {
+        email: user.email,
+        nombre: user.nombre,
+        apellido: user.apellido,
+      });
       navigate("/");
     } catch (error) {
       setError(error.message);
