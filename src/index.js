@@ -7,6 +7,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import ResetPassword from "./components/ResetPassword";
+import NotLogedinRoute from "./components/NotLogedinRoute";
+import LogedinRoute from "./components/LogedinRoute";
+import FormTarea from "./components/FormTarea";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,9 +17,30 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route
+            path="/login"
+            element={
+              <NotLogedinRoute>
+                <Login />
+              </NotLogedinRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <NotLogedinRoute>
+                <Register />
+              </NotLogedinRoute>
+            }
+          />
+          <Route
+            path="/resetPassword"
+            element={
+              <NotLogedinRoute>
+                <ResetPassword />
+              </NotLogedinRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

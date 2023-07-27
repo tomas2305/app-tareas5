@@ -1,13 +1,20 @@
 import { serverTimestamp } from "firebase/firestore";
-import { Box, FormControl, TextField } from "@mui/material";
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function FormTarea({addTarea}) {
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
+  const [error, setError] = useState('');
 
   function changeInput(event) {
     setInput(event.target.value);
+  }
+
+  function handleClose(){
+    navigate('/')
   }
 
   function handleAddTarea(event) {
@@ -24,9 +31,11 @@ export default function FormTarea({addTarea}) {
   }
 
   return (
-    <Box component="form" onSubmit={handleAddTarea} sx={{ width: "40%" }}>
-      <FormControl fullWidth>
-        <TextField
+    <Dialog fullWidth open={false} onClose={handleClose}>
+    <DialogTitle>Registrarse</DialogTitle>
+    <Box component="form" onSubmit={handleAddTarea}>
+      <DialogContent>
+      <TextField
           size="small"
           label="Nueva Tarea"
           variant="filled"
@@ -34,7 +43,19 @@ export default function FormTarea({addTarea}) {
           value={input}
           onChange={changeInput}
         />
-      </FormControl>
+        {error && (
+          <Alert sx={{ my: 2 }} severity="error">
+            {error}
+          </Alert>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button type="submit">
+          Añadir Tarea
+        </Button>
+      </DialogActions>
     </Box>
+  </Dialog>
   );
 }

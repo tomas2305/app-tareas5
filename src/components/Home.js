@@ -11,7 +11,7 @@ import { useTheme } from "@emotion/react";
 import Tareas from "./Tareas";
 import { Link, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-import FormTarea from "./FormTarea";
+import OpenIconSpeedDial from "./Dial";
 
 export default function Home() {
   const theme = useTheme();
@@ -64,6 +64,7 @@ export default function Home() {
         ) : (
           <Typography variant="h4">Bienvenido, no hay tareas aún!</Typography>
         )}
+      <OpenIconSpeedDial/>
       </Container>
     </>
   );
