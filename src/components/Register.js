@@ -6,12 +6,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { signup } = useAuthContext();
   const [validePassword, setValidePassword] = useState(false);
   const [confirmStyles, setConfirmStyles] = useState({});
+  const [error, setError] = useState("");
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -44,8 +47,15 @@ export default function Register() {
     }
   };
 
-  const handleRegister = (e) => {
-    setUser(user);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signup(user);
+      navigate("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -122,6 +132,12 @@ export default function Register() {
               required
               {...confirmStyles}
             />
+
+            {error && (
+              <Alert sx={{ my: 2 }} severity="error">
+                {error}
+              </Alert>
+            )}
           </DialogContent>
           <DialogActions>
             <Link to="/login">

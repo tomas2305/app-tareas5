@@ -2,6 +2,7 @@ import "./App.css";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, createTheme } from "@mui/material";
 import Home from "./components/Home";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   const theme = createTheme({
@@ -35,10 +36,12 @@ function App() {
   });
 
   return (
+    <AuthProvider>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Home />
     </ThemeProvider>
+    </AuthProvider>
   );
 }
 
