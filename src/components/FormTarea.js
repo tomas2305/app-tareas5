@@ -2,11 +2,9 @@ import { serverTimestamp } from "firebase/firestore";
 import { Box, FormControl, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import useTareasFirestore from "../services/useTareasFirestore";
 
-export default function FormTarea() {
+export default function FormTarea({addTarea}) {
   const [input, setInput] = useState("");
-  const {addTarea} = useTareasFirestore();
 
   function changeInput(event) {
     setInput(event.target.value);

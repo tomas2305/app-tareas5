@@ -59,7 +59,6 @@ export default function Home() {
       <Container className="App">
         {user ? (
           <>
-            <FormTarea />
             <Tareas />
           </>
         ) : (

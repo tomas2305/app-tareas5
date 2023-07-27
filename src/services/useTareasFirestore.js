@@ -15,7 +15,6 @@ export default function useTareasFirestore() {
   const {user} = useAuthContext()
   const userRef = doc(db, 'usuarios', user.email);
   const tareasRef = collection(userRef, "tareas");
-  const [tareas, setTareas] = useState([]);
 
   const getTareas = async () => {
     const consultaOrdenada = query(tareasRef, orderBy("fechaCreacion", "asc"));
@@ -30,12 +29,10 @@ export default function useTareasFirestore() {
   };
 
   async function addTarea(tarea) {
-    setTareas([...tareas, tarea]);
     await setDoc(doc(tareasRef, tarea.id), tarea);
   }
 
   function deleteTarea(id) {
-    setTareas(tareas.filter((tarea) => tarea.id !== id));
     const tareaRef = doc(db, "tareas", id);
     deleteDoc(tareaRef);
   }
@@ -44,14 +41,7 @@ export default function useTareasFirestore() {
     setDoc(doc(tareasRef, tarea.id), tarea);
   }
 
-  useEffect(() => {
-    const tareasDB = getTareas();
-    tareasDB.then((tareas) => {
-      setTareas(tareas);
-    });
-    console.log("efect");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  
 
-  return { tareas, getTareas, addTarea, deleteTarea, tacharTarea };
+  return {getTareas, addTarea, deleteTarea, tacharTarea };
 }
