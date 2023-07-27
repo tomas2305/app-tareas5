@@ -51,7 +51,7 @@ export default function Register() {
     e.preventDefault();
     setError("");
     try {
-      await signup(user);
+      await signup(user.email, user.password);
       navigate("/");
     } catch (error) {
       setError(error.message);
@@ -132,7 +132,6 @@ export default function Register() {
               required
               {...confirmStyles}
             />
-
             {error && (
               <Alert sx={{ my: 2 }} severity="error">
                 {error}

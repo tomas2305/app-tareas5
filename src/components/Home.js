@@ -1,12 +1,30 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { useTheme } from "@emotion/react";
 import Tareas from "./Tareas";
 import { Link, Outlet } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Home() {
   const theme = useTheme();
   const secondary = theme.palette.secondary.dark;
+  const { user, logout } = useAuthContext();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("logout correctamente");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <>
@@ -16,20 +34,34 @@ export default function Home() {
             App Tareas
           </Typography>
           <Box textAlign="right">
-            <Link to="/login">
-              <Button sx={{ mx: 2 }} variant="contained">
-                LOGIN
+            {!user ? (
+              <>
+                <Link to="/login">
+                  <Button sx={{ mx: 2 }} variant="contained">
+                    LOGIN
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button variant="outlined">Registrarse</Button>
+                </Link>
+              </>
+            ) : (
+              <Button onClick={handleLogout} sx={{ mx: 2 }} variant="outlined">
+                Logout
               </Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="outlined">Registrarse</Button>
-            </Link>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <Outlet/>
-      <Tareas />
+      <Outlet />
+      <Container className="App">
+        {user ? (
+          <Tareas />
+        ) : (
+          <Typography variant="h4">Bienvenido, no hay tareas aún!</Typography>
+        )}
+      </Container>
     </>
   );
-};
+}

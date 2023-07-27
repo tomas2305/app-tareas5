@@ -9,37 +9,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
 
-export default function Login() {
+export default function ResetPassword() {
   const navigate = useNavigate();
-  const {login} = useAuthContext();
-  const [error, setError] = useState('');
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const { resetPassword } = useAuthContext();
+  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleClose = () => {
     navigate("/");
   };
 
-  const handleChange = ({ target: { name, value } }) =>
-    setUser({ ...user, [name]: value });
+  const handleChange = ({ target: { value } }) => setEmail(value);
 
-  const handleLogin = async e => {
-    e.preventDefault();    
+  const handleReset = async e => {
+    e.preventDefault();
+    setError('');
     try {
-      await login(user.email, user.password);
-      navigate('/');
+        await resetPassword(email);
+        console.log('Se mando el mail correctamente');
+        navigate('/');
     } catch (error) {
-      setError(error.message);
+        setError(error.message);
     }
-  };
+  }
 
   return (
     <div>
       <Dialog fullWidth open={true} onClose={handleClose}>
         <DialogTitle>Login</DialogTitle>
-        <Box component="form" onSubmit={handleLogin}>
+        <Box component="form" onSubmit={handleReset}>
           <DialogContent>
             <TextField
               autoFocus
@@ -52,39 +50,20 @@ export default function Login() {
               variant="standard"
               required
               onChange={handleChange}
-              value={user.email}
+              value={email}
             />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="password"
-              name="password"
-              label="Password"
-              type="password"
-              autoComplete="true"
-              fullWidth
-              variant="standard"
-              required
-              onChange={handleChange}
-              value={user.password}
-            />
-             {error && (
+            {error && (
               <Alert sx={{ my: 2 }} severity="error">
                 {error}
               </Alert>
             )}
-            <Link to="/resetpassword">
-              <Button size="small">Reestablecer Contraseña</Button>
-            </Link>
-            <Link to="/register">
-              <Button size="small">Registrarse</Button>
-            </Link>
           </DialogContent>
           <DialogActions>
+            <Link to="/login">
+              <Button>Volver</Button>
+            </Link>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">
-              LOGIN
-            </Button>
+            <Button type="submit">Reestablecer </Button>
           </DialogActions>
         </Box>
       </Dialog>
