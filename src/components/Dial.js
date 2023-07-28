@@ -26,7 +26,7 @@ export default function OpenIconSpeedDial({ setOpenAddTareas }) {
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         ariaLabel="SpeedDial openIcon example"
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        sx={{ position: "fixed", bottom: 20, right: 16 }}
         icon={<SpeedDialIcon openIcon={<EditIcon />} />}
       >
         <SpeedDialAction

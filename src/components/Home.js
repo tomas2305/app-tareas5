@@ -11,6 +11,8 @@ import { useTheme } from "@emotion/react";
 import Tareas from "./Tareas";
 import { Link, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import Loading from "./Loading";
+import homeImage from "../assets/home.png";
 
 export default function Home() {
   const theme = useTheme();
@@ -61,7 +63,10 @@ export default function Home() {
             <Tareas />
           </>
         ) : (
-          <Typography variant="h4">Bienvenido, no hay tareas aún!</Typography>
+          <>
+            <img alt="" src={homeImage} height={400} />
+            <Typography variant="h4">¡Bienvenido! Ingresa para ver tus tareas</Typography>
+          </>
         )}
       </Container>
     </>

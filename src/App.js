@@ -12,6 +12,11 @@ function App() {
         body {
           background-color: #0d2b45;
         }
+        
+        /* Handle */
+        ::-webkit-scrollbar {
+          background: #ffaa5e;
+        }
         `,
       },
     },
@@ -37,10 +42,10 @@ function App() {
 
   return (
     <AuthProvider>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Home />
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Home />
+      </ThemeProvider>
     </AuthProvider>
   );
 }
