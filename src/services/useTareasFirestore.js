@@ -1,4 +1,4 @@
-import {db} from "../firebase";
+import { db } from "../firebase";
 import {
   collection,
   deleteDoc,
@@ -9,11 +9,13 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthContext";
+import { useState } from "react";
 
 export default function useTareasFirestore() {
-  const {user} = useAuthContext()
-  const userRef = doc(db, 'usuarios', user.email);
+  const { user } = useAuthContext();
+  const userRef = doc(db, "usuarios", user.email);
   const tareasRef = collection(userRef, "tareas");
+  const [loading, setLoading] = useState(true);
 
   const getTareas = async () => {
     const consultaOrdenada = query(tareasRef, orderBy("fechaCreacion", "asc"));
@@ -23,7 +25,8 @@ export default function useTareasFirestore() {
       const datos = doc.data();
       tareasDB.push(datos);
     });
-    console.log("getData");
+    setLoading(false);
+
     return tareasDB;
   };
 
@@ -40,7 +43,5 @@ export default function useTareasFirestore() {
     setDoc(doc(tareasRef, tarea.id), tarea);
   }
 
-  
-
-  return {getTareas, addTarea, deleteTarea, tacharTarea };
+  return { loading, getTareas, addTarea, deleteTarea, tacharTarea };
 }

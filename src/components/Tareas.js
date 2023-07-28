@@ -4,9 +4,10 @@ import Tarea from "./Tarea";
 import useTareasFirestore from "../services/useTareasFirestore";
 import FormTarea from "./FormTarea";
 import OpenIconSpeedDial from "./Dial";
+import Loading from "./Loading";
 
 export default function Tareas() {
-  const { addTarea, getTareas, deleteTarea, tacharTarea } =
+  const { loading, addTarea, getTareas, deleteTarea, tacharTarea } =
     useTareasFirestore();
   const [tareas, setTareas] = useState([]);
   const [openAddTareas, setOpenAddTareas] = useState(false);
@@ -32,6 +33,7 @@ export default function Tareas() {
 
   return (
     <>
+    {loading && <Loading/>}
       <FormTarea
         addTarea={handleAddTarea}
         open={openAddTareas}
