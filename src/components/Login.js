@@ -8,8 +8,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
+import { useAlertContext } from "../context/AlertContext";
 
 export default function Login() {
+  const {sendAlert} = useAlertContext();
   const navigate = useNavigate();
   const {login} = useAuthContext();
   const [error, setError] = useState('');
@@ -30,6 +32,7 @@ export default function Login() {
     try {
       await login(user.email, user.password);
       navigate('/');
+      sendAlert('Ingreso correctamente', 'success');
     } catch (error) {
       setError(error.message);
     }

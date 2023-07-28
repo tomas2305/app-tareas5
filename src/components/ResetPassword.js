@@ -8,8 +8,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
+import { useAlertContext } from "../context/AlertContext";
 
 export default function ResetPassword() {
+  const {sendAlert} = useAlertContext();
   const navigate = useNavigate();
   const { resetPassword } = useAuthContext();
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ export default function ResetPassword() {
     setError('');
     try {
         await resetPassword(email);
-        console.log('Se mando el mail correctamente');
+        sendAlert('Se mando un mail para restablecer la contraseña');
         navigate('/');
     } catch (error) {
         setError(error.message);
@@ -36,7 +38,7 @@ export default function ResetPassword() {
   return (
     <div>
       <Dialog fullWidth open={true} onClose={handleClose}>
-        <DialogTitle>Login</DialogTitle>
+        <DialogTitle>Reestablecer Contraseña</DialogTitle>
         <Box component="form" onSubmit={handleReset}>
           <DialogContent>
             <TextField

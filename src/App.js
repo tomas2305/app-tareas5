@@ -3,6 +3,7 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, createTheme } from "@mui/material";
 import Home from "./components/Home";
 import { AuthProvider } from "./context/AuthContext";
+import { AlertProvider } from "./context/AlertContext";
 
 function App() {
   const theme = createTheme({
@@ -42,10 +43,12 @@ function App() {
 
   return (
     <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Home />
-      </ThemeProvider>
+      <AlertProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Home />
+        </ThemeProvider>
+      </AlertProvider>
     </AuthProvider>
   );
 }

@@ -10,8 +10,10 @@ import {
 } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
+import { useAlertContext } from "../context/AlertContext";
 
 export default function useTareasFirestore() {
+  const { sendAlert } = useAlertContext();
   const { user } = useAuthContext();
   const userRef = doc(db, "usuarios", user.email);
   const tareasRef = collection(userRef, "tareas");
@@ -26,22 +28,36 @@ export default function useTareasFirestore() {
       tareasDB.push(datos);
     });
     setLoading(false);
-
     return tareasDB;
   };
 
   async function addTarea(tarea) {
-    await setDoc(doc(tareasRef, tarea.id), tarea);
+    try {
+      await setDoc(doc(tareasRef, tarea.id), tarea);
+      sendAlert("Tarea agregada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
   }
 
-  function deleteTarea(id) {
+  const deleteTarea = async (id) => {
     const tareaRef = doc(userRef, "tareas", id);
-    deleteDoc(tareaRef);
-  }
+    try {
+      await deleteDoc(tareaRef);
+      sendAlert("Tarea Borrada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
+  };
 
-  function tacharTarea(tarea) {
-    setDoc(doc(tareasRef, tarea.id), tarea);
-  }
+  const tacharTarea = async (tarea) => {
+    try {
+      await setDoc(doc(tareasRef, tarea.id), tarea);
+      sendAlert("Tarea Tachada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
+  };
 
   return { loading, getTareas, addTarea, deleteTarea, tacharTarea };
 }

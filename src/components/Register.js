@@ -10,8 +10,10 @@ import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useAlertContext } from "../context/AlertContext";
 
 export default function Register() {
+  const {sendAlert} = useAlertContext();
   const navigate = useNavigate();
   const userRef = collection(db, "usuarios");
   const { signup } = useAuthContext();
@@ -60,6 +62,7 @@ export default function Register() {
         apellido: user.apellido,
       });
       navigate("/");
+      sendAlert('Se registro correctamente', 'success');
     } catch (error) {
       setError(error.message);
     }

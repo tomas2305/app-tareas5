@@ -13,8 +13,11 @@ import { Link, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import Loading from "./Loading";
 import homeImage from "../assets/home.png";
+import FixedAlert from "./FixedAlert";
+import { useAlertContext } from "../context/AlertContext";
 
 export default function Home() {
+  const {sendAlert} = useAlertContext();
   const theme = useTheme();
   const secondary = theme.palette.secondary.dark;
   const { user, logout } = useAuthContext();
@@ -22,9 +25,9 @@ export default function Home() {
   const handleLogout = async () => {
     try {
       await logout();
-      console.log("logout correctamente");
+      sendAlert('Se cerro sesión correctamente', 'success');
     } catch (error) {
-      console.log(error.message);
+      sendAlert(error.message, 'error');
     }
   };
 
@@ -32,7 +35,7 @@ export default function Home() {
     <>
       <AppBar position="sticky" sx={{ bgcolor: secondary }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography variant="h5" textAlign="left">
+          <Typography variant="h5" textAlign="left" sx={{userSelect:'none'}}>
             App Tareas
           </Typography>
           <Box textAlign="right">
@@ -55,18 +58,18 @@ export default function Home() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Toolbar />
+      <Toolbar sx={{userSelect:'none'}}/>
       <Outlet />
-      <Container className="App">
+      <Container className="App" >
         {user ? (
           <>
             <Tareas />
           </>
         ) : (
-          <>
+          <Box sx={{userSelect:'none'}}>
             <img alt="" src={homeImage} height={400} />
             <Typography variant="h4">¡Bienvenido! Ingresa para ver tus tareas</Typography>
-          </>
+          </Box>
         )}
       </Container>
     </>
