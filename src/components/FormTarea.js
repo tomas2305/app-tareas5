@@ -1,20 +1,28 @@
 import { serverTimestamp } from "firebase/firestore";
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  TextField,
+} from "@mui/material";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Link, useNavigate } from "react-router-dom";
 
-export default function FormTarea({addTarea}) {
-  const navigate = useNavigate();
+export default function FormTarea({ addTarea, open, setOpenAddTareas }) {
   const [input, setInput] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   function changeInput(event) {
     setInput(event.target.value);
   }
 
-  function handleClose(){
-    navigate('/')
+  function handleClose() {
+    setOpenAddTareas(false);
   }
 
   function handleAddTarea(event) {
@@ -28,34 +36,36 @@ export default function FormTarea({addTarea}) {
       isTachada: false,
     });
     setInput("");
+    handleClose();
   }
 
   return (
-    <Dialog fullWidth open={false} onClose={handleClose}>
-    <DialogTitle>Registrarse</DialogTitle>
-    <Box component="form" onSubmit={handleAddTarea}>
-      <DialogContent>
-      <TextField
-          size="small"
-          label="Nueva Tarea"
-          variant="filled"
-          inputMode="text"
-          value={input}
-          onChange={changeInput}
-        />
-        {error && (
-          <Alert sx={{ my: 2 }} severity="error">
-            {error}
-          </Alert>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type="submit">
-          Añadir Tarea
-        </Button>
-      </DialogActions>
-    </Box>
-  </Dialog>
+    <Dialog fullWidth open={open} onClose={handleClose}>
+      <DialogTitle>Nueva Tarea</DialogTitle>
+      <Box component="form" onSubmit={handleAddTarea}>
+        <DialogContent>
+          <TextField
+            fullWidth
+            size="small"
+            label="Nueva Tarea"
+            variant="filled"
+            inputMode="text"
+            value={input}
+            onChange={changeInput}
+          />
+          {error && (
+            <Alert sx={{ my: 2 }} severity="error">
+              {error}
+            </Alert>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button disabled={!input} type="submit">
+            Añadir Tarea
+          </Button>
+        </DialogActions>
+      </Box>
+    </Dialog>
   );
 }

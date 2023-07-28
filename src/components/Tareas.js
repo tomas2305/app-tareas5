@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import Tarea from "./Tarea";
 import useTareasFirestore from "../services/useTareasFirestore";
 import FormTarea from "./FormTarea";
+import OpenIconSpeedDial from "./Dial";
 
 export default function Tareas() {
   const { addTarea, getTareas, deleteTarea, tacharTarea } =
     useTareasFirestore();
   const [tareas, setTareas] = useState([]);
+  const [openAddTareas, setOpenAddTareas] = useState(false);
 
   useEffect(() => {
     const tareasDB = getTareas();
@@ -30,7 +32,11 @@ export default function Tareas() {
 
   return (
     <>
-      <FormTarea addTarea={handleAddTarea} />
+      <FormTarea
+        addTarea={handleAddTarea}
+        open={openAddTareas}
+        setOpenAddTareas={setOpenAddTareas}
+      />
       <Grid container spacing={4}>
         {tareas.map((tarea) => (
           <Grid key={tarea.id} item xs={3}>
@@ -44,6 +50,7 @@ export default function Tareas() {
           </Grid>
         ))}
       </Grid>
+      <OpenIconSpeedDial setOpenAddTareas={setOpenAddTareas} />
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {db} from "../firebase";
 import {
   collection,
@@ -33,7 +32,7 @@ export default function useTareasFirestore() {
   }
 
   function deleteTarea(id) {
-    const tareaRef = doc(db, "tareas", id);
+    const tareaRef = doc(userRef, "tareas", id);
     deleteDoc(tareaRef);
   }
 
