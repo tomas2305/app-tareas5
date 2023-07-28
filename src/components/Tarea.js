@@ -5,15 +5,17 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Grow,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import tareaImage from "../assets/tarea.png";
 import { Delete } from "@mui/icons-material";
 
-export default function Tarea(props) {
-  const tarea = props.tarea
+export default function Tarea({tarea, deleteTarea, tacharTarea, timeTarea}) {
   const [isTachada, setIsTachada] = useState(tarea.isTachada);
+  const [open, setOpen] = useState(true);
+  const [timeoutTarea, setTimeoutTarea] = useState(timeTarea);
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
@@ -35,14 +37,17 @@ export default function Tarea(props) {
   function tachar() {
     const newTachada = !isTachada;
     setIsTachada(newTachada);
-    props.tacharTarea({...tarea, isTachada: newTachada});
+    tacharTarea({...tarea, isTachada: newTachada});
   }
 
-  function deleteTarea(){
-    props.deleteTarea(tarea.id);
+  function handleDeleteTarea(){
+    setTimeoutTarea(250);
+    setOpen(false);
+    setTimeout(() => deleteTarea(tarea.id), 800)
   }
 
   return (
+    <Grow in={open} timeout={timeoutTarea}>
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         sx={{ height: 50, backgroundSize: "cover" }}
@@ -68,10 +73,11 @@ export default function Tarea(props) {
             : cardActionsStyle
         }
       >
-        <Button size="small" onClick={deleteTarea}>
+        <Button size="small" onClick={handleDeleteTarea}>
           <Delete />
         </Button>
       </CardActions>
     </Card>
+    </Grow>
   );
 }

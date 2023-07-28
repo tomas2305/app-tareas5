@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid, Grow } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Tarea from "./Tarea";
 import useTareasFirestore from "../services/useTareasFirestore";
@@ -15,8 +15,13 @@ export default function Tareas() {
   useEffect(() => {
     const tareasDB = getTareas();
     tareasDB.then((tareas) => {
+      tareas.forEach((tarea, index) => {
+        const tiempo = 400 * (index + 1);
+        tarea.timeTarea = tiempo;
+      });
       setTareas(tareas);
     });
+
     console.log("efect");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -33,19 +38,20 @@ export default function Tareas() {
 
   return (
     <>
-    {loading && <Loading/>}
+      {loading && <Loading />}
       <FormTarea
         addTarea={handleAddTarea}
         open={openAddTareas}
         setOpenAddTareas={setOpenAddTareas}
       />
-      <Grid container spacing={4}>
+      <Grid container spacing={4} mb={4}>
         {tareas.map((tarea) => (
           <Grid key={tarea.id} item xs={3}>
             <Tarea
               tacharTarea={tacharTarea}
               deleteTarea={handleDeleteTarea}
               isTachada={tarea.isTachada}
+              timeTarea={tarea.timeTarea}
               id={tarea.id}
               tarea={tarea}
             />

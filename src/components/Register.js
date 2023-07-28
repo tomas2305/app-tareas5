@@ -17,6 +17,7 @@ export default function Register() {
   const navigate = useNavigate();
   const userRef = collection(db, "usuarios");
   const { signup } = useAuthContext();
+  const [open, setOpen] = useState(true);
   const [validePassword, setValidePassword] = useState(false);
   const [confirmStyles, setConfirmStyles] = useState({});
   const [error, setError] = useState("");
@@ -29,7 +30,8 @@ export default function Register() {
   });
 
   const handleClose = (e) => {
-    navigate("/");
+    setOpen(false);
+    setTimeout(() => navigate("/"), 400)
   };
 
   const handleChange = ({ target: { name, value } }) => {
@@ -70,7 +72,7 @@ export default function Register() {
 
   return (
     <div>
-      <Dialog fullWidth open={true} onClose={handleClose}>
+      <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Registrarse</DialogTitle>
         <Box onSubmit={handleRegister} component="form">
           <DialogContent>

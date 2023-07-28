@@ -12,6 +12,7 @@ import { useAlertContext } from "../context/AlertContext";
 
 export default function Login() {
   const {sendAlert} = useAlertContext();
+  const [open, setOpen] = useState(true);
   const navigate = useNavigate();
   const {login} = useAuthContext();
   const [error, setError] = useState('');
@@ -21,7 +22,8 @@ export default function Login() {
   });
 
   const handleClose = () => {
-    navigate("/");
+    setOpen(false);
+    setTimeout(() => navigate("/"), 400)
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -40,7 +42,7 @@ export default function Login() {
 
   return (
     <div>
-      <Dialog fullWidth open={true} onClose={handleClose}>
+      <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Login</DialogTitle>
         <Box component="form" onSubmit={handleLogin}>
           <DialogContent>

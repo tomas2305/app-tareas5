@@ -11,9 +11,7 @@ import { useTheme } from "@emotion/react";
 import Tareas from "./Tareas";
 import { Link, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-import Loading from "./Loading";
 import homeImage from "../assets/home.png";
-import FixedAlert from "./FixedAlert";
 import { useAlertContext } from "../context/AlertContext";
 
 export default function Home() {

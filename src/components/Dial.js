@@ -20,13 +20,13 @@ export default function OpenIconSpeedDial({ setOpenAddTareas }) {
   };
 
   return (
-    <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
+    <Box sx={{position: "fixed", bottom: 20, right: 80, height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
       <SpeedDial
         open={open}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         ariaLabel="SpeedDial openIcon example"
-        sx={{ position: "fixed", bottom: 20, right: 16 }}
+        // sx={{ position: "fixed", bottom: 20, right: 16 }}
         icon={<SpeedDialIcon openIcon={<EditIcon />} />}
       >
         <SpeedDialAction
