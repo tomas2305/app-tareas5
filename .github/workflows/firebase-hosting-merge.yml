@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo "${{ secrets.FIREBASE_CONFIG }}" > /home/runner/work/app-tareas5/app-tareas5/src/firebase-config.json
+      - run: echo "${{ secrets.FIREBASE_CONFIG }}" > src/firebase_config.json
       - run: npm ci && npm run build
       
       - uses: FirebaseExtended/action-hosting-deploy@v0
