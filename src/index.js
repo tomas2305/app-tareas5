@@ -8,8 +8,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ResetPassword from "./components/ResetPassword";
 import NotLogedinRoute from "./components/NotLogedinRoute";
-import LogedinRoute from "./components/LogedinRoute";
-import FormTarea from "./components/FormTarea";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
