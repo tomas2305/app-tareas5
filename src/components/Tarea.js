@@ -28,15 +28,17 @@ export default function Tarea({
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
+  const colorPrimary = theme.palette.primary;
+
   const cardContentStyle = {
     backgroundColor: colorTarea.main,
     paddingBottom: 1,
-    cursor: "pointer",
+    cursor: "pointer"
   };
   const cardActionsStyle = {
     justifyContent: "right",
     backgroundColor: colorTarea.main,
-    padding: 0,
+    padding: 0
   };
   const tareaTachadaStyle = {
     backgroundColor: colorTarea.light,
@@ -68,11 +70,13 @@ export default function Tarea({
 
   return (
     <Grow in={open} timeout={timeoutTarea}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345, transition: 'box-shadow 0.5s !important', '&:hover':{
+      boxShadow: `-10px 5px ${colorPrimary.main}`,
+    }}}>
         <CardMedia
           sx={{ height: 50, backgroundSize: "cover" }}
           image={tareaImage}
-          title="green iguana"
+          title="tarea"
         />
         <CardContent
           onClick={tachar}
