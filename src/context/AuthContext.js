@@ -6,7 +6,7 @@ import {
   signOut,
 } from "firebase/auth";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebaseTest";
+import { auth } from "../firebase";
 import Loading from "../components/Loading";
 
 const authContext = createContext();

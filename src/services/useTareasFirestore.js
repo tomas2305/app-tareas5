@@ -1,4 +1,4 @@
-import { db } from "../firebaseTest";
+import { db } from "../firebase";
 import {
   collection,
   deleteDoc,

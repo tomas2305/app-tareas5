@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box } from "@mui/material";
 import { useAuthContext } from "../context/AuthContext";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../firebaseTest";
+import { db } from "../firebase";
 import { useAlertContext } from "../context/AlertContext";
 
 export default function Register() {
