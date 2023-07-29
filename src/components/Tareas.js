@@ -157,7 +157,7 @@ export default function Tareas() {
       {confirm}
       <Grid container spacing={4} mb={4}>
         {tareas.map((tarea) => (
-          <Grid key={tarea.id} item xs={3}>
+          <Grid key={tarea.id} item xs={6} md={4} lg={3}>
             <Tarea
               tacharTarea={handleTacharTarea}
               deleteTarea={handleDeleteTarea}
