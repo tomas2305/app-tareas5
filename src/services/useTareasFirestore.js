@@ -13,7 +13,6 @@ import { useState } from "react";
 import { useAlertContext } from "../context/AlertContext";
 
 export default function useTareasFirestore() {
-  const { sendAlert } = useAlertContext();
   const { user } = useAuthContext();
   const userRef = doc(db, "usuarios", user.email);
   const tareasRef = collection(userRef, "tareas");

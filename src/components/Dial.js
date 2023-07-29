@@ -5,14 +5,20 @@ import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import EditIcon from "@mui/icons-material/Edit";
 import {
+  CheckOutlined,
   DoneAllOutlined,
   LayersClearOutlined,
   PostAddOutlined,
   RemoveDoneOutlined,
 } from "@mui/icons-material";
 
-export default function OpenIconSpeedDial({ setOpenAddTareas, deleteAllTareas, tacharAllTareas }) {
-
+export default function OpenIconSpeedDial({
+  setOpenAddTareas,
+  deleteAllTareas,
+  deleteAllTareasTachadas,
+  tacharAllTareas,
+  destacharAllTareas,
+}) {
   const [open, setOpen] = useState(false);
 
   const handleAddTarea = () => {
@@ -21,7 +27,16 @@ export default function OpenIconSpeedDial({ setOpenAddTareas, deleteAllTareas, t
   };
 
   return (
-    <Box sx={{position: "fixed", bottom: 20, right: 80, height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: 100,
+        right: 80,
+        height: 320,
+        transform: "translateZ(0px)",
+        flexGrow: 1,
+      }}
+    >
       <SpeedDial
         open={open}
         onMouseEnter={() => setOpen(true)}
@@ -36,6 +51,12 @@ export default function OpenIconSpeedDial({ setOpenAddTareas, deleteAllTareas, t
           onClick={handleAddTarea}
         />
         <SpeedDialAction
+          key={"Borrar Las Tareas Tachadas"}
+          icon={<RemoveDoneOutlined />}
+          tooltipTitle={"Borrar Las Tareas Tachadas"}
+          onClick={deleteAllTareasTachadas}
+        />
+        <SpeedDialAction
           key={"Borrar Todas Las Tareas"}
           icon={<LayersClearOutlined />}
           tooltipTitle={"Borrar Todas Las Tareas"}
@@ -43,15 +64,15 @@ export default function OpenIconSpeedDial({ setOpenAddTareas, deleteAllTareas, t
         />
         <SpeedDialAction
           key={"Tachar Todas Las Tareas"}
-          icon={<RemoveDoneOutlined />}
+          icon={<DoneAllOutlined />}
           tooltipTitle={"Tachar Todas Las Tareas"}
-          onClick={() => tacharAllTareas(true)}
+          onClick={tacharAllTareas}
         />
         <SpeedDialAction
           key={"Destachar Todas Las Tareas"}
-          icon={<DoneAllOutlined />}
+          icon={<CheckOutlined />}
           tooltipTitle={"Destachar Todas Las Tareas"}
-          onClick={() => tacharAllTareas(false)}
+          onClick={destacharAllTareas}
         />
       </SpeedDial>
     </Box>

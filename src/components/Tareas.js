@@ -9,10 +9,9 @@ import { useAlertContext } from "../context/AlertContext";
 import ConfirmAlert from "./ConfirmAlert";
 
 export default function Tareas() {
-  const { loading, addTarea, getTareas, deleteTarea } =
-    useTareasFirestore();
+  const { loading, addTarea, getTareas, deleteTarea } = useTareasFirestore();
   const [tareas, setTareas] = useState([]);
-  const {sendAlert} = useAlertContext();
+  const { sendAlert } = useAlertContext();
   const [openAddTareas, setOpenAddTareas] = useState(false);
   const [confirm, setConfirm] = useState(<></>);
 
@@ -25,8 +24,6 @@ export default function Tareas() {
       });
       setTareas(tareas);
     });
-
-    console.log("efect");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,40 +38,100 @@ export default function Tareas() {
   }
 
   const handleDeleteTarea = async (id) => {
-    setTareas(tareas.filter((tarea) => tarea.id !== id));
-    try {
-      await deleteTarea(id);
-      sendAlert("Tarea Borrada");
-    } catch (error) {
-      sendAlert(error.message, "danger");
-    }
-  }
+    console.log(tareas);
+    const newTareas = tareas.filter((tarea) => tarea.id !== id);
+    console.log(newTareas);
+    setTareas(newTareas);
+    // try {
+    //   await deleteTarea(id);
+    //   sendAlert("Tarea Borrada");
+    // } catch (error) {
+    //   sendAlert(error.message, "danger");
+    // }
+  };
 
-  const handleTacharTarea = async tarea => {
+  const handleTacharTarea = async (tarea) => {
     try {
       await addTarea(tarea);
+      const index = tareas.findIndex((tareaFind) => tareaFind.id === tarea.id);
+      tareas[index] = tarea;
       sendAlert("Tarea Cambiada");
     } catch (error) {
       sendAlert(error.message, "danger");
     }
-  }
+  };
 
   const deleteAllTareas = () => {
-    setConfirm(<ConfirmAlert/>);
-    tareas.forEach(tarea => handleDeleteTarea(tarea.id));
-  }
+    setConfirm(
+      <ConfirmAlert
+        cancel={() => setConfirm(<></>)}
+        action={async () => {
+          const promises = tareas.map((tarea) => handleDeleteTarea(tarea.id));
+          await Promise.all(promises);
+          setConfirm(<></>);
+        }}
+        message={"¿Estas seguro que quieres borrar todas las tareas?"}
+      />
+    );
+  };
 
-  const tacharAllTareas = isTachada => {
-    const tareasTachadas = [];
-    tareas.forEach(tarea =>{ 
-      tarea.isTachada = isTachada;
-      tareasTachadas.push(tarea);
-      handleTacharTarea(tarea);
-    });
-    setTareas(tareasTachadas);
-  }
+  const deleteAllTareasTachadas = () => {
+    setConfirm(
+      <ConfirmAlert
+        cancel={() => setConfirm(<></>)}
+        action={() => {
+          const tareasDelete = [];
+          tareas.forEach((tarea) => {
+            if (tarea.isTachada) tareasDelete.push(tarea);
+          });
+          tareasDelete.forEach((tarea) => {
+            handleDeleteTarea(tarea.id);
+            console.log(tarea);
+          });
+          setConfirm(<></>);
+        }}
+        message={"¿Estas seguro que quieres borrar todas las tareas tachadas?"}
+      />
+    );
+  };
 
+  const tacharAllTareas = () => {
+    setConfirm(
+      <ConfirmAlert
+        cancel={() => setConfirm(<></>)}
+        action={() => {
+          const tareasTachadas = [];
+          tareas.forEach((tarea) => {
+            tarea.isTachada = true;
+            tareasTachadas.push(tarea);
+            handleTacharTarea(tarea);
+          });
+          setTareas(tareasTachadas);
+          setConfirm(<></>);
+        }}
+        message={"¿Estas seguro que quieres tachar todas las tareas?"}
+      />
+    );
+  };
 
+  const destacharAllTareas = () => {
+    setConfirm(
+      <ConfirmAlert
+        cancel={() => setConfirm(<></>)}
+        action={() => {
+          const tareasTachadas = [];
+          tareas.forEach((tarea) => {
+            tarea.isTachada = false;
+            tareasTachadas.push(tarea);
+            handleTacharTarea(tarea);
+          });
+          setTareas(tareasTachadas);
+          setConfirm(<></>);
+        }}
+        message={"¿Estas seguro que quieres destachar todas las tareas?"}
+      />
+    );
+  };
 
   return (
     <>
@@ -97,7 +154,13 @@ export default function Tareas() {
           </Grid>
         ))}
       </Grid>
-      <OpenIconSpeedDial deleteAllTareas={deleteAllTareas} tacharAllTareas={tacharAllTareas} setOpenAddTareas={setOpenAddTareas} />
+      <OpenIconSpeedDial
+        deleteAllTareas={deleteAllTareas}
+        deleteAllTareasTachadas={deleteAllTareasTachadas}
+        tacharAllTareas={tacharAllTareas}
+        destacharAllTareas={destacharAllTareas}
+        setOpenAddTareas={setOpenAddTareas}
+      />
     </>
   );
 }
