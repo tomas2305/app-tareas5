@@ -12,16 +12,22 @@ import React, { useEffect, useState } from "react";
 import tareaImage from "../assets/tarea.png";
 import { Delete } from "@mui/icons-material";
 
-export default function Tarea({tarea, deleteTarea, tacharTarea, isTachadaProp}) {
+export default function Tarea({
+  tarea,
+  deleteTarea,
+  tacharTarea,
+  isTachadaProp,
+  isBorrada,
+}) {
   const [isTachada, setIsTachada] = useState(tarea.isTachada);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(!isBorrada);
   const [timeoutTarea, setTimeoutTarea] = useState(tarea.timeTarea);
-
 
   useEffect(() => {
     setIsTachada(isTachadaProp);
-    console.log('tarea effect');
-  }, [isTachadaProp]);
+    if(isBorrada) closeTarea();
+    console.log("tarea effect");
+  }, [isTachadaProp, isBorrada]);
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
@@ -43,47 +49,57 @@ export default function Tarea({tarea, deleteTarea, tacharTarea, isTachadaProp}) 
   function tachar() {
     const newTachada = !isTachada;
     setIsTachada(newTachada);
-    tacharTarea({...tarea, isTachada: newTachada});
+    tacharTarea({ ...tarea, isTachada: newTachada });
   }
 
-  function handleDeleteTarea(){
-    setTimeoutTarea(250);
-    setOpen(false);
-    setTimeout(() => deleteTarea(tarea.id), 400)
+  const handleDeleteTarea = async () => {
+    await closeTarea();
+    deleteTarea(tarea.id);
   }
+
+  const closeTarea = () => {
+    return new Promise((resolve, reject) => {
+      setTimeoutTarea(250);
+      setOpen(false);
+      setTimeout(() => {
+      resolve("Tarea completada");
+    }, 300);
+    })
+    
+  };
 
   return (
     <Grow in={open} timeout={timeoutTarea}>
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        sx={{ height: 50, backgroundSize: "cover" }}
-        image={tareaImage}
-        title="green iguana"
-      />
-      <CardContent
-        onClick={tachar}
-        sx={
-          isTachada
-            ? { ...cardContentStyle, ...tareaTachadaStyle }
-            : cardContentStyle
-        }
-      >
-        <Typography gutterBottom variant="h6" component="div">
-          {tarea.input}
-        </Typography>
-      </CardContent>
-      <CardActions
-        sx={
-          isTachada
-            ? { ...cardActionsStyle, ...tareaTachadaStyle }
-            : cardActionsStyle
-        }
-      >
-        <Button size="small" onClick={handleDeleteTarea}>
-          <Delete />
-        </Button>
-      </CardActions>
-    </Card>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardMedia
+          sx={{ height: 50, backgroundSize: "cover" }}
+          image={tareaImage}
+          title="green iguana"
+        />
+        <CardContent
+          onClick={tachar}
+          sx={
+            isTachada
+              ? { ...cardContentStyle, ...tareaTachadaStyle }
+              : cardContentStyle
+          }
+        >
+          <Typography gutterBottom variant="h6" component="div">
+            {tarea.input}
+          </Typography>
+        </CardContent>
+        <CardActions
+          sx={
+            isTachada
+              ? { ...cardActionsStyle, ...tareaTachadaStyle }
+              : cardActionsStyle
+          }
+        >
+          <Button size="small" onClick={handleDeleteTarea}>
+            <Delete />
+          </Button>
+        </CardActions>
+      </Card>
     </Grow>
   );
 }

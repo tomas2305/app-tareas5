@@ -30,7 +30,7 @@ export default function FormTarea({ addTarea, open, setOpenAddTareas }) {
       id: newID,
       fechaCreacion: fecha,
       input: input,
-      isTachada: false,
+      isTachada: false
     });
     setInput("");
     handleClose();

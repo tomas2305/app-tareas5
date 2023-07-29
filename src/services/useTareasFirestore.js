@@ -10,7 +10,6 @@ import {
 } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
-import { useAlertContext } from "../context/AlertContext";
 
 export default function useTareasFirestore() {
   const { user } = useAuthContext();
@@ -36,6 +35,8 @@ export default function useTareasFirestore() {
     const tareaRef = doc(userRef, "tareas", id);
     return deleteDoc(tareaRef);
   };
+
+
 
   return { loading, getTareas, addTarea, deleteTarea };
 }

@@ -21,6 +21,7 @@ export default function Tareas() {
       tareas.forEach((tarea, index) => {
         const tiempo = 300 * (index + 1);
         tarea.timeTarea = tiempo;
+        tarea.isBorrada = false;
       });
       setTareas(tareas);
     });
@@ -38,16 +39,25 @@ export default function Tareas() {
   }
 
   const handleDeleteTarea = async (id) => {
-    console.log(tareas);
     const newTareas = tareas.filter((tarea) => tarea.id !== id);
-    console.log(newTareas);
     setTareas(newTareas);
-    // try {
-    //   await deleteTarea(id);
-    //   sendAlert("Tarea Borrada");
-    // } catch (error) {
-    //   sendAlert(error.message, "danger");
-    // }
+    try {
+      await deleteTarea(id);
+      sendAlert("Tarea Borrada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
+  };
+
+  const handleDeleteTareas = async (tareasDel) => {
+    tareasDel.forEach(async (tarea) => {
+      try {
+        await deleteTarea(tarea.id);
+        sendAlert("Tarea Borrada");
+      } catch (error) {
+        sendAlert(error.message, "danger");
+      }
+    })
   };
 
   const handleTacharTarea = async (tarea) => {
@@ -60,14 +70,17 @@ export default function Tareas() {
       sendAlert(error.message, "danger");
     }
   };
+  
 
   const deleteAllTareas = () => {
     setConfirm(
       <ConfirmAlert
         cancel={() => setConfirm(<></>)}
         action={async () => {
-          const promises = tareas.map((tarea) => handleDeleteTarea(tarea.id));
-          await Promise.all(promises);
+          tareas.forEach(tarea => {
+            tarea.isBorrada = true;
+          });
+          handleDeleteTareas(tareas);
           setConfirm(<></>);
         }}
         message={"¿Estas seguro que quieres borrar todas las tareas?"}
@@ -81,13 +94,13 @@ export default function Tareas() {
         cancel={() => setConfirm(<></>)}
         action={() => {
           const tareasDelete = [];
+          const newTareas = [];
           tareas.forEach((tarea) => {
-            if (tarea.isTachada) tareasDelete.push(tarea);
+            if (tarea.isTachada) {tareasDelete.push(tarea);}
+            else{newTareas.push(tarea);}
           });
-          tareasDelete.forEach((tarea) => {
-            handleDeleteTarea(tarea.id);
-            console.log(tarea);
-          });
+          setTareas(newTareas);
+          handleDeleteTareas(tareasDelete);
           setConfirm(<></>);
         }}
         message={"¿Estas seguro que quieres borrar todas las tareas tachadas?"}
@@ -150,6 +163,7 @@ export default function Tareas() {
               deleteTarea={handleDeleteTarea}
               tarea={tarea}
               isTachadaProp={tarea.isTachada}
+              isBorrada={tarea.isBorrada}
             />
           </Grid>
         ))}
