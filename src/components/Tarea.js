@@ -8,14 +8,20 @@ import {
   Grow,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tareaImage from "../assets/tarea.png";
 import { Delete } from "@mui/icons-material";
 
-export default function Tarea({tarea, deleteTarea, tacharTarea, timeTarea}) {
+export default function Tarea({tarea, deleteTarea, tacharTarea, isTachadaProp}) {
   const [isTachada, setIsTachada] = useState(tarea.isTachada);
   const [open, setOpen] = useState(true);
-  const [timeoutTarea, setTimeoutTarea] = useState(timeTarea);
+  const [timeoutTarea, setTimeoutTarea] = useState(tarea.timeTarea);
+
+
+  useEffect(() => {
+    setIsTachada(isTachadaProp);
+    console.log('tarea effect');
+  }, [isTachadaProp]);
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
@@ -43,7 +49,7 @@ export default function Tarea({tarea, deleteTarea, tacharTarea, timeTarea}) {
   function handleDeleteTarea(){
     setTimeoutTarea(250);
     setOpen(false);
-    setTimeout(() => deleteTarea(tarea.id), 800)
+    setTimeout(() => deleteTarea(tarea.id), 400)
   }
 
   return (

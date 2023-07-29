@@ -31,33 +31,12 @@ export default function useTareasFirestore() {
     return tareasDB;
   };
 
-  async function addTarea(tarea) {
-    try {
-      await setDoc(doc(tareasRef, tarea.id), tarea);
-      sendAlert("Tarea agregada");
-    } catch (error) {
-      sendAlert(error.message, "danger");
-    }
-  }
+  const addTarea = (tarea) => setDoc(doc(tareasRef, tarea.id), tarea);
 
-  const deleteTarea = async (id) => {
+  const deleteTarea = (id) => {
     const tareaRef = doc(userRef, "tareas", id);
-    try {
-      await deleteDoc(tareaRef);
-      sendAlert("Tarea Borrada");
-    } catch (error) {
-      sendAlert(error.message, "danger");
-    }
+    return deleteDoc(tareaRef);
   };
 
-  const tacharTarea = async (tarea) => {
-    try {
-      await setDoc(doc(tareasRef, tarea.id), tarea);
-      sendAlert("Tarea Tachada");
-    } catch (error) {
-      sendAlert(error.message, "danger");
-    }
-  };
-
-  return { loading, getTareas, addTarea, deleteTarea, tacharTarea };
+  return { loading, getTareas, addTarea, deleteTarea };
 }

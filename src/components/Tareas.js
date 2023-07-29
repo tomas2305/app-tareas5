@@ -1,22 +1,26 @@
-import { Box, Grid, Grow } from "@mui/material";
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Tarea from "./Tarea";
 import useTareasFirestore from "../services/useTareasFirestore";
 import FormTarea from "./FormTarea";
 import OpenIconSpeedDial from "./Dial";
 import Loading from "./Loading";
+import { useAlertContext } from "../context/AlertContext";
+import ConfirmAlert from "./ConfirmAlert";
 
 export default function Tareas() {
-  const { loading, addTarea, getTareas, deleteTarea, tacharTarea } =
+  const { loading, addTarea, getTareas, deleteTarea } =
     useTareasFirestore();
   const [tareas, setTareas] = useState([]);
+  const {sendAlert} = useAlertContext();
   const [openAddTareas, setOpenAddTareas] = useState(false);
+  const [confirm, setConfirm] = useState(<></>);
 
   useEffect(() => {
     const tareasDB = getTareas();
     tareasDB.then((tareas) => {
       tareas.forEach((tarea, index) => {
-        const tiempo = 400 * (index + 1);
+        const tiempo = 300 * (index + 1);
         tarea.timeTarea = tiempo;
       });
       setTareas(tareas);
@@ -28,13 +32,49 @@ export default function Tareas() {
 
   async function handleAddTarea(tarea) {
     setTareas([...tareas, tarea]);
-    await addTarea(tarea);
+    try {
+      await addTarea(tarea);
+      sendAlert("Tarea agregada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
   }
 
-  function handleDeleteTarea(id) {
+  const handleDeleteTarea = async (id) => {
     setTareas(tareas.filter((tarea) => tarea.id !== id));
-    deleteTarea(id);
+    try {
+      await deleteTarea(id);
+      sendAlert("Tarea Borrada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
   }
+
+  const handleTacharTarea = async tarea => {
+    try {
+      await addTarea(tarea);
+      sendAlert("Tarea Cambiada");
+    } catch (error) {
+      sendAlert(error.message, "danger");
+    }
+  }
+
+  const deleteAllTareas = () => {
+    setConfirm(<ConfirmAlert/>);
+    tareas.forEach(tarea => handleDeleteTarea(tarea.id));
+  }
+
+  const tacharAllTareas = isTachada => {
+    const tareasTachadas = [];
+    tareas.forEach(tarea =>{ 
+      tarea.isTachada = isTachada;
+      tareasTachadas.push(tarea);
+      handleTacharTarea(tarea);
+    });
+    setTareas(tareasTachadas);
+  }
+
+
 
   return (
     <>
@@ -44,21 +84,20 @@ export default function Tareas() {
         open={openAddTareas}
         setOpenAddTareas={setOpenAddTareas}
       />
+      {confirm}
       <Grid container spacing={4} mb={4}>
         {tareas.map((tarea) => (
           <Grid key={tarea.id} item xs={3}>
             <Tarea
-              tacharTarea={tacharTarea}
+              tacharTarea={handleTacharTarea}
               deleteTarea={handleDeleteTarea}
-              isTachada={tarea.isTachada}
-              timeTarea={tarea.timeTarea}
-              id={tarea.id}
               tarea={tarea}
+              isTachadaProp={tarea.isTachada}
             />
           </Grid>
         ))}
       </Grid>
-      <OpenIconSpeedDial setOpenAddTareas={setOpenAddTareas} />
+      <OpenIconSpeedDial deleteAllTareas={deleteAllTareas} tacharAllTareas={tacharAllTareas} setOpenAddTareas={setOpenAddTareas} />
     </>
   );
 }

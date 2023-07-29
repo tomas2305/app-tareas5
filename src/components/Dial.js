@@ -8,9 +8,10 @@ import {
   DoneAllOutlined,
   LayersClearOutlined,
   PostAddOutlined,
+  RemoveDoneOutlined,
 } from "@mui/icons-material";
 
-export default function OpenIconSpeedDial({ setOpenAddTareas }) {
+export default function OpenIconSpeedDial({ setOpenAddTareas, deleteAllTareas, tacharAllTareas }) {
 
   const [open, setOpen] = useState(false);
 
@@ -26,7 +27,6 @@ export default function OpenIconSpeedDial({ setOpenAddTareas }) {
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
         ariaLabel="SpeedDial openIcon example"
-        // sx={{ position: "fixed", bottom: 20, right: 16 }}
         icon={<SpeedDialIcon openIcon={<EditIcon />} />}
       >
         <SpeedDialAction
@@ -39,13 +39,19 @@ export default function OpenIconSpeedDial({ setOpenAddTareas }) {
           key={"Borrar Todas Las Tareas"}
           icon={<LayersClearOutlined />}
           tooltipTitle={"Borrar Todas Las Tareas"}
-          onClick={handleAddTarea}
+          onClick={deleteAllTareas}
         />
         <SpeedDialAction
           key={"Tachar Todas Las Tareas"}
-          icon={<DoneAllOutlined />}
+          icon={<RemoveDoneOutlined />}
           tooltipTitle={"Tachar Todas Las Tareas"}
-          onClick={handleAddTarea}
+          onClick={() => tacharAllTareas(true)}
+        />
+        <SpeedDialAction
+          key={"Destachar Todas Las Tareas"}
+          icon={<DoneAllOutlined />}
+          tooltipTitle={"Destachar Todas Las Tareas"}
+          onClick={() => tacharAllTareas(false)}
         />
       </SpeedDial>
     </Box>

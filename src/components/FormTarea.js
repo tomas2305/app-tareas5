@@ -1,13 +1,11 @@
 import { serverTimestamp } from "firebase/firestore";
 import {
-  Alert,
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -15,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function FormTarea({ addTarea, open, setOpenAddTareas }) {
   const [input, setInput] = useState("");
-  const [error, setError] = useState("");
 
   function changeInput(event) {
     setInput(event.target.value);
@@ -53,11 +50,6 @@ export default function FormTarea({ addTarea, open, setOpenAddTareas }) {
             value={input}
             onChange={changeInput}
           />
-          {error && (
-            <Alert sx={{ my: 2 }} severity="error">
-              {error}
-            </Alert>
-          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
