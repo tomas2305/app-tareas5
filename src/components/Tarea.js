@@ -17,17 +17,14 @@ export default function Tarea({
   deleteTarea,
   tacharTarea,
   isTachadaProp,
-  isBorrada,
 }) {
   const [isTachada, setIsTachada] = useState(tarea.isTachada);
-  const [open, setOpen] = useState(!isBorrada);
+  const [open, setOpen] = useState(true);
   const [timeoutTarea, setTimeoutTarea] = useState(tarea.timeTarea);
 
   useEffect(() => {
     setIsTachada(isTachadaProp);
-    if(isBorrada) closeTarea();
-    console.log("tarea effect");
-  }, [isTachadaProp, isBorrada]);
+  }, [isTachadaProp]);
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
@@ -49,7 +46,8 @@ export default function Tarea({
   function tachar() {
     const newTachada = !isTachada;
     setIsTachada(newTachada);
-    tacharTarea({ ...tarea, isTachada: newTachada });
+    const tareaTachada = { ...tarea, isTachada: newTachada };
+    tacharTarea(tareaTachada);
   }
 
   const handleDeleteTarea = async () => {

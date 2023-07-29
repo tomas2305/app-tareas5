@@ -7,6 +7,7 @@ import {
   orderBy,
   query,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
@@ -36,7 +37,14 @@ export default function useTareasFirestore() {
     return deleteDoc(tareaRef);
   };
 
+  const updateTarea = (id, campo, value) => {
+    const tareaRef = doc(userRef, "tareas", id);
+    return updateDoc(tareaRef, {
+      [campo]: value
+    })
+  }
 
 
-  return { loading, getTareas, addTarea, deleteTarea };
+
+  return { loading, getTareas, addTarea, deleteTarea, updateTarea };
 }

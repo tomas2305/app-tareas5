@@ -9,7 +9,8 @@ import { useAlertContext } from "../context/AlertContext";
 import ConfirmAlert from "./ConfirmAlert";
 
 export default function Tareas() {
-  const { loading, addTarea, getTareas, deleteTarea } = useTareasFirestore();
+  const { loading, addTarea, getTareas, deleteTarea, updateTarea } =
+    useTareasFirestore();
   const [tareas, setTareas] = useState([]);
   const { sendAlert } = useAlertContext();
   const [openAddTareas, setOpenAddTareas] = useState(false);
@@ -21,7 +22,6 @@ export default function Tareas() {
       tareas.forEach((tarea, index) => {
         const tiempo = 300 * (index + 1);
         tarea.timeTarea = tiempo;
-        tarea.isBorrada = false;
       });
       setTareas(tareas);
     });
@@ -57,12 +57,12 @@ export default function Tareas() {
       } catch (error) {
         sendAlert(error.message, "danger");
       }
-    })
+    });
   };
 
   const handleTacharTarea = async (tarea) => {
     try {
-      await addTarea(tarea);
+      await updateTarea(tarea.id, "isTachada", tarea.isTachada);
       const index = tareas.findIndex((tareaFind) => tareaFind.id === tarea.id);
       tareas[index] = tarea;
       sendAlert("Tarea Cambiada");
@@ -70,16 +70,13 @@ export default function Tareas() {
       sendAlert(error.message, "danger");
     }
   };
-  
 
   const deleteAllTareas = () => {
     setConfirm(
       <ConfirmAlert
         cancel={() => setConfirm(<></>)}
         action={async () => {
-          tareas.forEach(tarea => {
-            tarea.isBorrada = true;
-          });
+          setTareas([]);
           handleDeleteTareas(tareas);
           setConfirm(<></>);
         }}
@@ -96,8 +93,11 @@ export default function Tareas() {
           const tareasDelete = [];
           const newTareas = [];
           tareas.forEach((tarea) => {
-            if (tarea.isTachada) {tareasDelete.push(tarea);}
-            else{newTareas.push(tarea);}
+            if (tarea.isTachada) {
+              tareasDelete.push(tarea);
+            } else {
+              newTareas.push(tarea);
+            }
           });
           setTareas(newTareas);
           handleDeleteTareas(tareasDelete);
@@ -163,7 +163,6 @@ export default function Tareas() {
               deleteTarea={handleDeleteTarea}
               tarea={tarea}
               isTachadaProp={tarea.isTachada}
-              isBorrada={tarea.isBorrada}
             />
           </Grid>
         ))}
