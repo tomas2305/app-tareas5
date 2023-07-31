@@ -28,12 +28,11 @@ export default function Tarea({
 
   const theme = useTheme();
   const colorTarea = theme.palette.secondary;
-  const colorPrimary = theme.palette.primary;
 
   const cardContentStyle = {
     backgroundColor: colorTarea.main,
     paddingBottom: 1,
-    cursor: "pointer"
+    cursor: "pointer",
   };
   const cardActionsStyle = {
     justifyContent: "right",
@@ -70,9 +69,7 @@ export default function Tarea({
 
   return (
     <Grow in={open} timeout={timeoutTarea}>
-      <Card sx={{ maxWidth: 345, transition: 'box-shadow 0.5s !important', '&:hover':{
-      boxShadow: `-10px 5px ${colorPrimary.main}`,
-    }}}>
+      <Card sx={{ maxWidth: 345}}>
         <CardMedia
           sx={{ height: 50, backgroundSize: "cover" }}
           image={tareaImage}

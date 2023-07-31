@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Container,
+  Grow,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -33,9 +34,11 @@ export default function Home() {
     <>
       <AppBar position="sticky" sx={{ bgcolor: secondary }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Grow in timeout={2000}>
           <Typography variant="h5" textAlign="left" sx={{userSelect:'none'}}>
             App Tareas
           </Typography>
+          </Grow>
           <Box textAlign="right">
             {!user ? (
               <>
